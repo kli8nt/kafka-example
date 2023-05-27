@@ -62,7 +62,7 @@ func (kf *Kf) Writer() (KWriter) {
 	return kWriter
 }
 
-func (kf *Kf) Reader() (KReader) {
+func (kf *Kf) Reader(offset int64) (KReader) {
 	topic := kf.config.topic
 	uri := fmt.Sprintf("%s:%s", kf.config.host, kf.config.port)
 	connection := kafka.NewReader(kafka.ReaderConfig{
@@ -71,7 +71,7 @@ func (kf *Kf) Reader() (KReader) {
 		Partition: 0,
 		MaxBytes:  10e6, // 10MB
 	})
-	// .SetOffset(42)
+	connection.SetOffset(offset)
 
 	kReader := KReader{connection: connection, topic: topic}
 	kf.cleanups = append(kf.cleanups, func() {

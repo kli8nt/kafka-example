@@ -32,7 +32,7 @@ func main() {
 	kf := Kf{}
 	kf.Init(config)
 	defer kf.Close()
-	reader := kf.Reader()
+	reader := kf.Reader(0)
 	writer := kf.Writer()
 
 	go func() {
